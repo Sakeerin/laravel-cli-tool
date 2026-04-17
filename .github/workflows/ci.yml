@@ -1,0 +1,67 @@
+# name: ci
+
+# on:
+#   push:
+#     branches:
+#       - main
+#       - master
+#   pull_request:
+
+# jobs:
+#   quality:
+#     runs-on: ubuntu-latest
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         php-version: ['8.2', '8.3']
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Setup PHP
+#         uses: shivammathur/setup-php@v2
+#         with:
+#           php-version: ${{ matrix.php-version }}
+#           coverage: none
+
+#       - name: Validate composer.json
+#         run: composer validate --strict
+
+#       - name: Install dependencies
+#         run: composer install --prefer-dist --no-interaction --no-progress
+
+#       - name: Run tests
+#         run: composer test
+
+#       - name: Run lint
+#         run: composer lint
+
+#   build-phar:
+#     needs: quality
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Setup PHP
+#         uses: shivammathur/setup-php@v2
+#         with:
+#           php-version: '8.3'
+#           coverage: none
+
+#       - name: Install dependencies
+#         run: composer install --prefer-dist --no-interaction --no-progress
+
+#       - name: Download Box
+#         run: curl -fsSL https://github.com/box-project/box/releases/latest/download/box.phar -o box.phar
+
+#       - name: Build phar
+#         run: php -d phar.readonly=0 box.phar compile
+
+#       - name: Upload phar artifact
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: lx-phar
+#           path: builds/lx.phar
