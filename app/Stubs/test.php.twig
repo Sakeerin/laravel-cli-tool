@@ -2,8 +2,12 @@
 
 declare(strict_types=1);
 
+use ReflectionClass;
 use {{ subject_namespace }};
 
 test('{{ description }}', function (): void {
-    expect(new {{ subject_class }}())->toBeInstanceOf({{ subject_class }}::class);
+    $reflection = new ReflectionClass({{ subject_class }}::class);
+
+    expect($reflection->getName())->toBe({{ subject_class }}::class)
+        ->and($reflection->isAbstract())->toBe({{ is_abstract ? 'true' : 'false' }});
 });
