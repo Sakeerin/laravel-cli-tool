@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+{% if interface_namespace %}
+
+use {{ interface_namespace }};
+{% endif %}
+{% if is_abstract %}
+abstract class {{ class_name }}{% if interface_namespace %} implements {{ interface_name }}{% endif %}
+{% else %}
+class {{ class_name }}{% if interface_namespace %} implements {{ interface_name }}{% endif %}
+{% endif %}
+{
+{% if with_constructor %}
+    public function __construct()
+    {
+        //
+    }
+{% endif %}
+}

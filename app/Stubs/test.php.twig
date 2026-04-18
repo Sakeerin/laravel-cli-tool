@@ -1,0 +1,9 @@
+<?php
+
+declare(strict_types=1);
+
+use {{ subject_namespace }};
+
+test('{{ description }}', function (): void {
+    expect(new {{ subject_class }}())->toBeInstanceOf({{ subject_class }}::class);
+});
