@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+{% if model_namespace %}
+
+use {{ model_namespace }};
+{% endif %}
+{% if interface_namespace %}
+use {{ interface_namespace }};
+{% endif %}
+
+class {{ class_name }}{% if interface_namespace %} implements {{ interface_name }}{% endif %}
+
+{
+{% if model_name %}
+    public function __construct(
+        private readonly {{ model_name }} $model,
+    ) {}
+{% else %}
+    public function __construct()
+    {
+        //
+    }
+{% endif %}
+}

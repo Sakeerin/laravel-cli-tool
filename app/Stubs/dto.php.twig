@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+{% if is_readonly %}
+final readonly class {{ class_name }}
+{% else %}
+final class {{ class_name }}
+{% endif %}
+{
+    public function __construct(
+        // TODO: add properties
+    ) {}
+{% if with_from_array %}
+
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            // TODO: map properties
+        );
+    }
+{% endif %}
+}
