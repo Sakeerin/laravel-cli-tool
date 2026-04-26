@@ -2,12 +2,12 @@
     "name": "laravel-cli-tool/lx",
     "description": "A Laravel developer CLI companion for scaffolding, linting, and project health checks.",
     "keywords": ["laravel", "cli", "console", "developer-tools", "scaffolding"],
-    "homepage": "https://github.com/laravel-cli-tool/lx",
-    "type": "project",
+    "homepage": "https://github.com/Sakeerin/laravel-cli-tool",
+    "type": "library",
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/laravel-cli-tool/lx/issues",
-        "source": "https://github.com/laravel-cli-tool/lx"
+        "issues": "https://github.com/Sakeerin/laravel-cli-tool/issues",
+        "source": "https://github.com/Sakeerin/laravel-cli-tool"
     },
     "authors": [
         {
@@ -19,6 +19,7 @@
         "php": "^8.2",
         "friendsofphp/php-cs-fixer": "^3.95",
         "laravel-zero/framework": "^12.0.2",
+        "symfony/yaml": "^7.4",
         "twig/twig": "^3.24"
     },
     "require-dev": {

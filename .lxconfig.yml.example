@@ -1,0 +1,50 @@
+version: 1
+
+scaffold:
+  service_path: app/Services
+  repository_path: app/Repositories
+  contract_path: app/Contracts
+  dto_path: app/Data
+  action_path: app/Actions
+  test_path: tests/Unit
+  use_readonly_dto: true
+  use_strict_types: true
+
+lint:
+  rules:
+    require_return_types: true
+    require_strict_types: true
+    require_docblock_for: []
+    max_method_length: 30
+    naming:
+      service_suffix: Service
+      repository_suffix: Repository
+      dto_suffix: Data
+  ignore:
+    - app/Http/Controllers/Auth
+    - "**/*Request.php"
+
+check:
+  required_env:
+    - APP_KEY
+    - DB_CONNECTION
+    - QUEUE_CONNECTION
+    - CACHE_DRIVER
+  warn_if:
+    - key: APP_DEBUG
+      value: "true"
+      message: "APP_DEBUG should be false in production"
+    - key: QUEUE_CONNECTION
+      value: sync
+      message: "Use redis or database queue in production"
+
+ai:
+  model: claude-sonnet-4-6
+  max_tokens: 4096
+  migration_style: fluent
+  test_framework: pest
+  review_focus:
+    - n_plus_one
+    - missing_indexes
+    - security
+    - naming_convention

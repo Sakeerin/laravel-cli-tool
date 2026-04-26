@@ -9,8 +9,7 @@ dataset('make dto options', [
             $dtoPath = $projectRoot.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'Data'.DIRECTORY_SEPARATOR.'CreateUserData.php';
 
             expect(file_get_contents($dtoPath))
-                ->toContain('final class CreateUserData')
-                ->not->toContain('readonly')
+                ->toContain('final readonly class CreateUserData')
                 ->not->toContain('fromArray');
         },
     ],
@@ -78,6 +77,35 @@ test('it fails when the dto file already exists', function (): void {
                 ->expectsOutputToContain('File already exists: app/Data/CreateUserData.php')
                 ->assertExitCode(1);
         });
+    } finally {
+        deleteDirectory($projectRoot);
+    }
+});
+
+test('it uses custom dto and test paths from .lxconfig.yml defaults', function (): void {
+    $projectRoot = testProjectRoot();
+
+    try {
+        createTestComposerJson($projectRoot, [
+            'App\\' => 'src/',
+        ]);
+        createTestLxConfig($projectRoot, [
+            'scaffold' => [
+                'dto_path' => 'src/Domain/Data',
+                'use_readonly_dto' => true,
+            ],
+        ]);
+
+        withWorkingDirectory($projectRoot, function (): void {
+            $this->artisan('make:dto', ['name' => 'Billing/CreateInvoiceData'])
+                ->expectsOutputToContain('Created src/Domain/Data/Billing/CreateInvoiceData.php')
+                ->assertExitCode(0);
+        });
+
+        $dtoPath = $projectRoot.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Domain'.DIRECTORY_SEPARATOR.'Data'.DIRECTORY_SEPARATOR.'Billing'.DIRECTORY_SEPARATOR.'CreateInvoiceData.php';
+
+        expect(file_get_contents($dtoPath))
+            ->toContain('final readonly class CreateInvoiceData');
     } finally {
         deleteDirectory($projectRoot);
     }

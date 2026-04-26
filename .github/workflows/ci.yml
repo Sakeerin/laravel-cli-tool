@@ -1,67 +1,102 @@
-# name: ci
+name: ci
 
-# on:
-#   push:
-#     branches:
-#       - main
-#       - master
-#   pull_request:
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
 
-# jobs:
-#   quality:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         php-version: ["8.2", "8.3"]
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["8.2", "8.3"]
 
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-#       - name: Setup PHP
-#         uses: shivammathur/setup-php@v2
-#         with:
-#           php-version: ${{ matrix.php-version }}
-#           coverage: none
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
 
-#       - name: Validate composer.json
-#         run: composer validate --strict
+      - name: Validate composer.json
+        run: composer validate --strict
 
-#       - name: Install dependencies
-#         run: composer install --prefer-dist --no-interaction --no-progress
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
 
-#       - name: Run tests
-#         run: composer test
+      - name: Run tests
+        run: composer test
 
-#       - name: Run lint
-#         run: composer lint
+      - name: Run lint
+        run: composer lint
 
-#   build-phar:
-#     needs: quality
-#     runs-on: ubuntu-latest
+  laravel-compat:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["8.2", "8.3"]
+        laravel-version: ["^10.0", "^11.0"]
 
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-#       - name: Setup PHP
-#         uses: shivammathur/setup-php@v2
-#         with:
-#           php-version: "8.3"
-#           coverage: none
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
 
-#       - name: Install dependencies
-#         run: composer install --prefer-dist --no-interaction --no-progress
+      - name: Create Laravel test project
+        run: composer create-project laravel/laravel:${{ matrix.laravel-version }} compat-app --prefer-dist --no-interaction --no-progress
 
-#       - name: Download Box
-#         run: curl -fsSL https://github.com/box-project/box/releases/latest/download/box.phar -o box.phar
+      - name: Install lx from the workspace
+        working-directory: compat-app
+        run: |
+          composer config repositories.lx path "$GITHUB_WORKSPACE"
+          composer require laravel-cli-tool/lx:"*@dev" --dev --no-interaction --no-progress
 
-#       - name: Build phar
-#         run: php -d phar.readonly=0 box.phar compile
+      - name: Smoke test lx inside Laravel
+        working-directory: compat-app
+        run: |
+          php vendor/bin/lx make:service PaymentService --interface --test
+          test -f app/Services/PaymentService.php
+          test -f app/Contracts/PaymentServiceInterface.php
+          test -f tests/Unit/Services/PaymentServiceTest.php
 
-#       - name: Upload phar artifact
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: lx-phar
-#           path: builds/lx.phar
+  build-phar:
+    needs: [quality, laravel-compat]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Download Box
+        run: curl -fsSL https://github.com/box-project/box/releases/latest/download/box.phar -o box.phar
+
+      - name: Build phar
+        run: php -d phar.readonly=0 box.phar compile
+
+      - name: Upload phar artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lx-phar
+          path: builds/lx.phar

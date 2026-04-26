@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Commands\Make;
 
+use App\Config\LxConfig;
 use App\Services\ScaffoldService;
 use LaravelZero\Framework\Commands\Command;
 
@@ -28,16 +29,17 @@ class MakeServiceCommand extends Command
     {
         $name = $this->normalizeName((string) $this->argument('name'));
         $projectRoot = getcwd() ?: '.';
+        $config = LxConfig::load($projectRoot);
 
-        $service = $this->buildServiceDefinition($name, $projectRoot);
+        $service = $this->buildServiceDefinition($name, $projectRoot, $config);
         $files = [$service];
 
         if ((bool) $this->option('interface')) {
-            $files[] = $this->buildInterfaceDefinition($name, $projectRoot);
+            $files[] = $this->buildInterfaceDefinition($name, $projectRoot, $config);
         }
 
         if ((bool) $this->option('test')) {
-            $files[] = $this->buildTestDefinition($name, $service['fqcn']);
+            $files[] = $this->buildTestDefinition($name, $service['fqcn'], $config);
         }
 
         foreach ($files as $file) {
@@ -64,9 +66,9 @@ class MakeServiceCommand extends Command
     /**
      * @return array{path:string, fqcn:string, contents:string}
      */
-    private function buildServiceDefinition(string $name, string $projectRoot): array
+    private function buildServiceDefinition(string $name, string $projectRoot, LxConfig $config): array
     {
-        $path = "app/Services/{$name}.php";
+        $path = "{$config->servicePath()}/{$name}.php";
         $fqcn = $this->scaffoldService->resolveNamespace($path, $projectRoot);
 
         [$namespace, $className] = $this->splitClass($fqcn);
@@ -76,7 +78,7 @@ class MakeServiceCommand extends Command
 
         if ((bool) $this->option('interface')) {
             $interfaceFqcn = $this->scaffoldService->resolveNamespace(
-                "app/Contracts/{$name}Interface.php",
+                "{$config->contractPath()}/{$name}Interface.php",
                 $projectRoot,
             );
             [, $interfaceName] = $this->splitClass($interfaceFqcn);
@@ -99,9 +101,9 @@ class MakeServiceCommand extends Command
     /**
      * @return array{path:string, fqcn:string, contents:string}
      */
-    private function buildInterfaceDefinition(string $name, string $projectRoot): array
+    private function buildInterfaceDefinition(string $name, string $projectRoot, LxConfig $config): array
     {
-        $path = "app/Contracts/{$name}Interface.php";
+        $path = "{$config->contractPath()}/{$name}Interface.php";
         $fqcn = $this->scaffoldService->resolveNamespace($path, $projectRoot);
 
         [$namespace, $className] = $this->splitClass($fqcn);
@@ -119,9 +121,9 @@ class MakeServiceCommand extends Command
     /**
      * @return array{path:string, fqcn:string, contents:string}
      */
-    private function buildTestDefinition(string $name, string $serviceFqcn): array
+    private function buildTestDefinition(string $name, string $serviceFqcn, LxConfig $config): array
     {
-        $path = "tests/Unit/Services/{$name}Test.php";
+        $path = "{$config->testPath()}/Services/{$name}Test.php";
         [, $serviceClass] = $this->splitClass($serviceFqcn);
 
         return [

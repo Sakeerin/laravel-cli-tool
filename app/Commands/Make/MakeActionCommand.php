@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Commands\Make;
 
+use App\Config\LxConfig;
 use App\Services\ScaffoldService;
 use LaravelZero\Framework\Commands\Command;
 
@@ -26,12 +27,13 @@ class MakeActionCommand extends Command
     {
         $name = $this->normalizeName((string) $this->argument('name'));
         $projectRoot = getcwd() ?: '.';
+        $config = LxConfig::load($projectRoot);
 
-        $action = $this->buildActionDefinition($name, $projectRoot);
+        $action = $this->buildActionDefinition($name, $projectRoot, $config);
         $files = [$action];
 
         if ((bool) $this->option('test')) {
-            $files[] = $this->buildTestDefinition($name, $action['fqcn']);
+            $files[] = $this->buildTestDefinition($name, $action['fqcn'], $config);
         }
 
         foreach ($files as $file) {
@@ -58,9 +60,9 @@ class MakeActionCommand extends Command
     /**
      * @return array{path:string, fqcn:string, contents:string}
      */
-    private function buildActionDefinition(string $name, string $projectRoot): array
+    private function buildActionDefinition(string $name, string $projectRoot, LxConfig $config): array
     {
-        $path = "app/Actions/{$name}.php";
+        $path = "{$config->actionPath()}/{$name}.php";
         $fqcn = $this->scaffoldService->resolveNamespace($path, $projectRoot);
 
         [$namespace, $className] = $this->splitClass($fqcn);
@@ -79,9 +81,9 @@ class MakeActionCommand extends Command
     /**
      * @return array{path:string, fqcn:string, contents:string}
      */
-    private function buildTestDefinition(string $name, string $actionFqcn): array
+    private function buildTestDefinition(string $name, string $actionFqcn, LxConfig $config): array
     {
-        $path = "tests/Unit/Actions/{$name}Test.php";
+        $path = "{$config->testPath()}/Actions/{$name}Test.php";
         [, $actionClass] = $this->splitClass($actionFqcn);
 
         return [
@@ -91,6 +93,7 @@ class MakeActionCommand extends Command
                 'subject_namespace' => $actionFqcn,
                 'subject_class' => $actionClass,
                 'description' => "it executes the {$actionClass} action",
+                'is_abstract' => false,
             ]),
         ];
     }

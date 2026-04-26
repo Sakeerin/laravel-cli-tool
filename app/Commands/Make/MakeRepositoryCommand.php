@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Commands\Make;
 
+use App\Config\LxConfig;
 use App\Services\ScaffoldService;
 use LaravelZero\Framework\Commands\Command;
 
@@ -27,16 +28,17 @@ class MakeRepositoryCommand extends Command
     {
         $name = $this->normalizeName((string) $this->argument('name'));
         $projectRoot = getcwd() ?: '.';
+        $config = LxConfig::load($projectRoot);
 
-        $repository = $this->buildRepositoryDefinition($name, $projectRoot);
+        $repository = $this->buildRepositoryDefinition($name, $projectRoot, $config);
         $files = [$repository];
 
         if ((bool) $this->option('interface')) {
-            $files[] = $this->buildInterfaceDefinition($name, $projectRoot);
+            $files[] = $this->buildInterfaceDefinition($name, $projectRoot, $config);
         }
 
         if ((bool) $this->option('test')) {
-            $files[] = $this->buildTestDefinition($name, $repository['fqcn']);
+            $files[] = $this->buildTestDefinition($name, $repository['fqcn'], $config);
         }
 
         foreach ($files as $file) {
@@ -63,9 +65,9 @@ class MakeRepositoryCommand extends Command
     /**
      * @return array{path:string, fqcn:string, contents:string}
      */
-    private function buildRepositoryDefinition(string $name, string $projectRoot): array
+    private function buildRepositoryDefinition(string $name, string $projectRoot, LxConfig $config): array
     {
-        $path = "app/Repositories/{$name}.php";
+        $path = "{$config->repositoryPath()}/{$name}.php";
         $fqcn = $this->scaffoldService->resolveNamespace($path, $projectRoot);
 
         [$namespace, $className] = $this->splitClass($fqcn);
@@ -75,7 +77,7 @@ class MakeRepositoryCommand extends Command
 
         if ((bool) $this->option('interface')) {
             $interfaceFqcn = $this->scaffoldService->resolveNamespace(
-                "app/Contracts/{$name}Interface.php",
+                "{$config->contractPath()}/{$name}Interface.php",
                 $projectRoot,
             );
             [, $interfaceName] = $this->splitClass($interfaceFqcn);
@@ -108,9 +110,9 @@ class MakeRepositoryCommand extends Command
     /**
      * @return array{path:string, fqcn:string, contents:string}
      */
-    private function buildInterfaceDefinition(string $name, string $projectRoot): array
+    private function buildInterfaceDefinition(string $name, string $projectRoot, LxConfig $config): array
     {
-        $path = "app/Contracts/{$name}Interface.php";
+        $path = "{$config->contractPath()}/{$name}Interface.php";
         $fqcn = $this->scaffoldService->resolveNamespace($path, $projectRoot);
 
         [$namespace, $className] = $this->splitClass($fqcn);
@@ -128,9 +130,9 @@ class MakeRepositoryCommand extends Command
     /**
      * @return array{path:string, fqcn:string, contents:string}
      */
-    private function buildTestDefinition(string $name, string $repositoryFqcn): array
+    private function buildTestDefinition(string $name, string $repositoryFqcn, LxConfig $config): array
     {
-        $path = "tests/Unit/Repositories/{$name}Test.php";
+        $path = "{$config->testPath()}/Repositories/{$name}Test.php";
         [, $repositoryClass] = $this->splitClass($repositoryFqcn);
 
         return [

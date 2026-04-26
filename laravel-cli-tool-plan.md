@@ -879,11 +879,11 @@ public function validate(Request $request): JsonResponse
 - [x] `MakeActionCommand` + `--invokable`, `--test`
 
 **วันที่ 9–10: Publish + CI**
-- [ ] `LxConfig::load()` — อ่าน `.lxconfig.yml` ถ้ามี, ใช้ defaults ถ้าไม่มี
-- [ ] `composer.json` ครบ: description, keywords, license (MIT)
+- [x] `LxConfig::load()` — อ่าน `.lxconfig.yml` ถ้ามี, ใช้ defaults ถ้าไม่มี
+- [x] `composer.json` ครบ: description, keywords, license (MIT)
 - [ ] publish to Packagist: `composer global require yourname/lx`
-- [ ] GitHub Actions: test on PHP 8.2, 8.3 × Laravel 10, 11
-- [ ] CHANGELOG.md, README.md เบื้องต้น
+- [x] GitHub Actions: test on PHP 8.2, 8.3 × Laravel 10, 11
+- [x] CHANGELOG.md, README.md เบื้องต้น
 
 **Deliverable สัปดาห์ 2:** v0.1.0 บน Packagist ✅
 

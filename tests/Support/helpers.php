@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Config\LxConfig;
 use App\Services\NamespaceResolver;
 use App\Services\ScaffoldService;
+use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -86,6 +88,23 @@ if (! function_exists('createTestComposerJson')) {
                 ],
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
         );
+    }
+}
+
+if (! function_exists('createTestLxConfig')) {
+    /**
+     * @param  array<string, mixed>  $overrides
+     */
+    function createTestLxConfig(string $projectRoot, array $overrides = []): void
+    {
+        $config = array_replace_recursive(
+            LxConfig::defaults(),
+            $overrides,
+        );
+
+        $yaml = Yaml::dump($config, 5, 2);
+
+        file_put_contents($projectRoot.DIRECTORY_SEPARATOR.'.lxconfig.yml', $yaml);
     }
 }
 

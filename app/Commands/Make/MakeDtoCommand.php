@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Commands\Make;
 
+use App\Config\LxConfig;
 use App\Services\ScaffoldService;
 use LaravelZero\Framework\Commands\Command;
 
@@ -26,8 +27,9 @@ class MakeDtoCommand extends Command
     {
         $name = $this->normalizeName((string) $this->argument('name'));
         $projectRoot = getcwd() ?: '.';
+        $config = LxConfig::load($projectRoot);
 
-        $dto = $this->buildDtoDefinition($name, $projectRoot);
+        $dto = $this->buildDtoDefinition($name, $projectRoot, $config);
 
         if (is_file($projectRoot.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, $dto['path']))) {
             $this->components->error("File already exists: {$dto['path']}");
@@ -49,9 +51,9 @@ class MakeDtoCommand extends Command
     /**
      * @return array{path:string, fqcn:string, contents:string}
      */
-    private function buildDtoDefinition(string $name, string $projectRoot): array
+    private function buildDtoDefinition(string $name, string $projectRoot, LxConfig $config): array
     {
-        $path = "app/Data/{$name}.php";
+        $path = "{$config->dtoPath()}/{$name}.php";
         $fqcn = $this->scaffoldService->resolveNamespace($path, $projectRoot);
 
         [$namespace, $className] = $this->splitClass($fqcn);
@@ -62,7 +64,7 @@ class MakeDtoCommand extends Command
             'contents' => $this->scaffoldService->renderStub('dto.php.twig', [
                 'namespace' => $namespace,
                 'class_name' => $className,
-                'is_readonly' => (bool) $this->option('readonly'),
+                'is_readonly' => (bool) ($this->option('readonly') ?: $config->get('scaffold.use_readonly_dto', false)),
                 'with_from_array' => (bool) $this->option('from-array'),
             ]),
         ];

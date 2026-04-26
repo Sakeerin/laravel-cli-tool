@@ -99,3 +99,33 @@ test('it fails when the service file already exists', function (): void {
         deleteDirectory($projectRoot);
     }
 });
+
+test('it uses custom scaffold paths from .lxconfig.yml', function (): void {
+    $projectRoot = testProjectRoot();
+
+    try {
+        createTestComposerJson($projectRoot, [
+            'App\\' => 'src/',
+            'Tests\\' => 'tests/',
+        ]);
+        createTestLxConfig($projectRoot, [
+            'scaffold' => [
+                'service_path' => 'src/Domain/Services',
+                'contract_path' => 'src/Domain/Contracts',
+                'test_path' => 'tests/Architecture',
+            ],
+        ]);
+
+        withWorkingDirectory($projectRoot, function (): void {
+            $this->artisan('make:service', ['name' => 'Billing/PaymentService', '--interface' => true, '--test' => true])
+                ->expectsOutputToContain('Created src/Domain/Services/Billing/PaymentService.php')
+                ->assertExitCode(0);
+        });
+
+        expect(is_file($projectRoot.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Domain'.DIRECTORY_SEPARATOR.'Services'.DIRECTORY_SEPARATOR.'Billing'.DIRECTORY_SEPARATOR.'PaymentService.php'))->toBeTrue();
+        expect(is_file($projectRoot.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Domain'.DIRECTORY_SEPARATOR.'Contracts'.DIRECTORY_SEPARATOR.'Billing'.DIRECTORY_SEPARATOR.'PaymentServiceInterface.php'))->toBeTrue();
+        expect(is_file($projectRoot.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.'Architecture'.DIRECTORY_SEPARATOR.'Services'.DIRECTORY_SEPARATOR.'Billing'.DIRECTORY_SEPARATOR.'PaymentServiceTest.php'))->toBeTrue();
+    } finally {
+        deleteDirectory($projectRoot);
+    }
+});
