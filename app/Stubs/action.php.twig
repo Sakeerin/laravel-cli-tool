@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+class {{ class_name }}
+{
+{% if is_invokable %}
+    public function __invoke()
+    {
+        //
+    }
+{% else %}
+    public function handle()
+    {
+        //
+    }
+{% endif %}
+}

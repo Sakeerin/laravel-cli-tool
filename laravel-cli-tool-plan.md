@@ -875,8 +875,8 @@ public function validate(Request $request): JsonResponse
 - [x] unit tests ทั้งหมด
 
 **วันที่ 8: make:action**
-- [ ] `action.php.twig` (invokable + regular)
-- [ ] `MakeActionCommand` + `--invokable`, `--test`
+- [x] `action.php.twig` (invokable + regular)
+- [x] `MakeActionCommand` + `--invokable`, `--test`
 
 **วันที่ 9–10: Publish + CI**
 - [ ] `LxConfig::load()` — อ่าน `.lxconfig.yml` ถ้ามี, ใช้ defaults ถ้าไม่มี
