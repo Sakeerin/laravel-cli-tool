@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\CommandExecutor;
+use App\Services\ConventionLinter;
 use App\Services\NamespaceResolver;
 use App\Services\ScaffoldService;
 use Illuminate\Support\ServiceProvider;
@@ -41,6 +43,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(NamespaceResolver::class, fn (): NamespaceResolver => new NamespaceResolver);
+        $this->app->singleton(CommandExecutor::class, fn (): CommandExecutor => new CommandExecutor);
+        $this->app->singleton(
+            ConventionLinter::class,
+            fn ($app): ConventionLinter => new ConventionLinter(
+                $app->make(CommandExecutor::class),
+            )
+        );
 
         $this->app->singleton(
             ScaffoldService::class,

@@ -108,6 +108,20 @@ if (! function_exists('createTestLxConfig')) {
     }
 }
 
+if (! function_exists('createPhpFile')) {
+    function createPhpFile(string $projectRoot, string $relativePath, string $contents): void
+    {
+        $absolutePath = $projectRoot.DIRECTORY_SEPARATOR.str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $relativePath);
+        $directory = dirname($absolutePath);
+
+        if (! is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        file_put_contents($absolutePath, $contents);
+    }
+}
+
 if (! function_exists('scaffoldService')) {
     function scaffoldService(): ScaffoldService
     {

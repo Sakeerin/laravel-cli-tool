@@ -896,22 +896,22 @@ public function validate(Request $request): JsonResponse
 #### สัปดาห์ 3 — Convention Linter
 
 **วันที่ 11–12: ConventionLinter**
-- [ ] ติดตั้ง `squizlabs/php_codesniffer`
-- [ ] `ConventionLinter::run()` — PHP_CodeSniffer wrapper
-- [ ] parse JSON output → structured errors
-- [ ] auto-fix via `phpcbf`
+- [x] ติดตั้ง `squizlabs/php_codesniffer`
+- [x] `ConventionLinter::run()` — PHP_CodeSniffer wrapper
+- [x] parse JSON output → structured errors
+- [x] auto-fix via `phpcbf`
 
 **วันที่ 13–14: LintCommand**
-- [ ] `LintCommand` + `--fix`, `--strict`, `--format`
-- [ ] `--format=github` → GitHub Actions annotation format
-- [ ] อ่าน ignore patterns จาก `.lxconfig.yml`
-- [ ] แสดง progress bar ระหว่าง scan
-- [ ] unit test: mock PHP_CodeSniffer output
+- [x] `LintCommand` + `--fix`, `--strict`, `--format`
+- [x] `--format=github` → GitHub Actions annotation format
+- [x] อ่าน ignore patterns จาก `.lxconfig.yml`
+- [x] แสดง progress bar ระหว่าง scan
+- [x] unit test: mock PHP_CodeSniffer output
 
 **วันที่ 15: Custom Rules Engine**
-- [ ] ตรวจ `require_return_types`, `require_strict_types` จาก `.lxconfig.yml`
-- [ ] ตรวจ naming convention (suffix rules)
-- [ ] ตรวจ method length
+- [x] ตรวจ `require_return_types`, `require_strict_types` จาก `.lxconfig.yml`
+- [x] ตรวจ naming convention (suffix rules)
+- [x] ตรวจ method length
 
 **Deliverable สัปดาห์ 3:** `lx lint --fix` ทำงานได้ ใช้ใน CI ได้
 
