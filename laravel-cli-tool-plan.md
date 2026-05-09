@@ -920,25 +920,25 @@ public function validate(Request $request): JsonResponse
 #### สัปดาห์ 4 — Health Check + make:module
 
 **วันที่ 16–17: HealthChecker**
-- [ ] `HealthChecker` checks:
+- [x] `HealthChecker` checks:
   - PHP version vs `composer.json` require
   - .env variables ครบตาม `.env.example`
   - `composer audit` security advisories (parse JSON output)
   - `APP_DEBUG`, `APP_KEY`, `QUEUE_CONNECTION` warnings
   - `APP_ENV` ≠ production ใน production server
-- [ ] `CheckCommand` + `--fix` (แสดง fix commands แนะนำ)
+- [x] `CheckCommand` + `--fix` (แสดง fix commands แนะนำ)
 
 **วันที่ 18–19: make:module**
-- [ ] module stub templates: controller, service, repository, policy, migration, seeder, routes, tests
-- [ ] `MakeModuleCommand` + `--all` flag
-- [ ] สร้างไฟล์ทั้งหมดใน transaction (rollback ถ้า error กลางทาง)
-- [ ] สร้าง `routes/{module}.php` พร้อม resource routes
+- [x] module stub templates: controller, service, repository, policy, migration, seeder, routes, tests
+- [x] `MakeModuleCommand` + `--all` flag
+- [x] สร้างไฟล์ทั้งหมดใน transaction (rollback ถ้า error กลางทาง)
+- [x] สร้าง `routes/{module}.php` พร้อม resource routes
 
 **วันที่ 20: .lxconfig.yml Full Support**
-- [ ] validation ครบทุก field
-- [ ] error messages ชัดเจนเมื่อ config ผิด format
-- [ ] `lx config:init` — สร้าง `.lxconfig.yml` ด้วย wizard
-- [ ] shared config via URL: `lx config:pull https://example.com/lxconfig.yml`
+- [x] validation ครบทุก field
+- [x] error messages ชัดเจนเมื่อ config ผิด format
+- [x] `lx config:init` — สร้าง `.lxconfig.yml` ด้วย wizard
+- [x] shared config via URL: `lx config:pull https://example.com/lxconfig.yml`
 
 **Deliverable สัปดาห์ 4:** v0.2.0 — core feature ครบ
 
@@ -1217,9 +1217,9 @@ Key metric: Free → Pro conversion rate target = 3–5%
 - [x] `make:repository` + `--model` ทำงานถูกต้อง
 - [x] `make:dto` + `--readonly` + `--from-array` ทำงานถูกต้อง
 - [ ] `make:action` + `--invokable` ทำงานถูกต้อง
-- [ ] `make:module --all` สร้างไฟล์ครบ 10+ ไฟล์ถูกต้อง
+- [x] `make:module --all` สร้างไฟล์ครบ 10+ ไฟล์ถูกต้อง
 - [ ] `lint` + `--fix` ทำงานถูกต้อง
-- [ ] `check` ตรวจครบทุก category
+- [x] `check` ตรวจครบทุก category
 
 **AI Commands (Pro)**
 - [ ] `ai:migration` สร้าง migration PHP ที่ valid ได้

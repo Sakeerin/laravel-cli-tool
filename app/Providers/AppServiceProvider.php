@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\CommandExecutor;
 use App\Services\ConventionLinter;
+use App\Services\HealthChecker;
 use App\Services\NamespaceResolver;
 use App\Services\ScaffoldService;
 use Illuminate\Support\ServiceProvider;
@@ -47,6 +48,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             ConventionLinter::class,
             fn ($app): ConventionLinter => new ConventionLinter(
+                $app->make(CommandExecutor::class),
+            )
+        );
+
+        $this->app->singleton(
+            HealthChecker::class,
+            fn ($app): HealthChecker => new HealthChecker(
                 $app->make(CommandExecutor::class),
             )
         );
