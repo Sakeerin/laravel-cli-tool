@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Services\ClaudeService;
 use App\Services\CommandExecutor;
 use App\Services\ConventionLinter;
 use App\Services\HealthChecker;
 use App\Services\NamespaceResolver;
 use App\Services\ScaffoldService;
+use App\Services\UsageTracker;
 use Illuminate\Support\ServiceProvider;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -44,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(NamespaceResolver::class, fn (): NamespaceResolver => new NamespaceResolver);
+        $this->app->singleton(UsageTracker::class, fn (): UsageTracker => new UsageTracker);
+        $this->app->singleton(ClaudeService::class, fn (): ClaudeService => new ClaudeService);
         $this->app->singleton(CommandExecutor::class, fn (): CommandExecutor => new CommandExecutor);
         $this->app->singleton(
             ConventionLinter::class,

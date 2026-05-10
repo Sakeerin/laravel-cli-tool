@@ -951,22 +951,22 @@ public function validate(Request $request): JsonResponse
 #### สัปดาห์ 5 — ai:migration + ai:fix
 
 **วันที่ 21–22: Claude Service**
-- [ ] ติดตั้ง `anthropic/anthropic-sdk-php`
-- [ ] `ClaudeService::streamText()` — streaming output ใน terminal
-- [ ] `ClaudeService::complete()` — non-streaming สำหรับ structured output
-- [ ] error handling: API key ไม่มี, rate limit, timeout
+- [x] ติดตั้ง `anthropic-ai/sdk`
+- [x] `ClaudeService::streamText()` — streaming output ใน terminal
+- [x] `ClaudeService::complete()` — non-streaming สำหรับ structured output
+- [x] error handling: API key ไม่มี, rate limit, timeout
 
 **วันที่ 23–24: ai:migration**
-- [ ] `AiMigrationCommand` — รับ description, ส่งไป Claude, save file
-- [ ] `MigrationPrompt::system()` + `::user()`
-- [ ] parse Claude output → validate เป็น PHP syntax ก่อน save
-- [ ] `--dry-run` flag: แสดงผลโดยไม่สร้างไฟล์
-- [ ] test ด้วย mock Claude response
+- [x] `AiMigrationCommand` — รับ description, ส่งไป Claude, save file
+- [x] `MigrationPrompt::system()` + `::user()`
+- [x] parse Claude output → validate เป็น PHP syntax ก่อน save
+- [x] `--dry-run` flag: แสดงผลโดยไม่สร้างไฟล์
+- [x] test ด้วย mock Claude response
 
 **วันที่ 25: ai:fix**
-- [ ] `AiFixCommand` — รับ error message, วิเคราะห์, แสดง options
-- [ ] `--last` flag: อ่าน error จาก `storage/logs/laravel.log` ล่าสุด
-- [ ] interactive prompt: "Run fix? [y/N]"
+- [x] `AiFixCommand` — รับ error message, วิเคราะห์, แสดง options
+- [x] `--last` flag: อ่าน error จาก `storage/logs/laravel.log` ล่าสุด
+- [x] interactive prompt: "Run fix? [y/N]"
 
 **Deliverable สัปดาห์ 5:** ai:migration + ai:fix ทำงานได้
 
@@ -975,23 +975,23 @@ public function validate(Request $request): JsonResponse
 #### สัปดาห์ 6 — ai:test + ai:review
 
 **วันที่ 26–27: ai:test**
-- [ ] `AiTestCommand` — parse method signature จากไฟล์จริง (PHP reflection)
-- [ ] `TestGenerationPrompt` — include method signature + return type ใน prompt
-- [ ] generate Pest syntax (default) หรือ PHPUnit (`--phpunit`)
-- [ ] validate generated test เป็น PHP syntax ก่อน save
+- [x] `AiTestCommand` — parse method signature จากไฟล์จริง (PHP reflection)
+- [x] `TestGenerationPrompt` — include method signature + return type ใน prompt
+- [x] generate Pest syntax (default) หรือ PHPUnit (`--phpunit`)
+- [x] validate generated test เป็น PHP syntax ก่อน save
 
 **วันที่ 28–29: ai:review**
-- [ ] `AiReviewCommand` — `--staged` (git diff --cached), `--diff`, `--file`
-- [ ] run `git diff` → parse output → ส่งไป Claude ทีละ file
-- [ ] format output: file path + line number + severity + message
-- [ ] streaming output เพื่อแสดงผล review ทีละ file
+- [x] `AiReviewCommand` — `--staged` (git diff --cached), `--diff`, `--file`
+- [x] run `git diff` → parse output → ส่งไป Claude ทีละ file
+- [x] format output: file path + line number + severity + message
+- [x] streaming output เพื่อแสดงผล review ทีละ file
 
 **วันที่ 30: Rate Limiting + Cost Display**
-- [ ] แสดง token ที่ใช้หลัง AI command: "Used 1,240 tokens (~$0.004)"
-- [ ] local rate limit: max 10 AI calls/นาที (ป้องกัน runaway loop)
-- [ ] `lx ai:usage` — สรุป token ที่ใช้ใน 30 วันที่ผ่านมา
+- [x] แสดง token ที่ใช้หลัง AI command: "Used 1,240 tokens (~$0.004)"
+- [x] local rate limit: max 10 AI calls/นาที (ป้องกัน runaway loop)
+- [x] `lx ai:usage` — สรุป token ที่ใช้ใน 30 วันที่ผ่านมา
 
-**Deliverable สัปดาห์ 6:** AI commands ครบ 4 ตัว
+**Deliverable สัปดาห์ 6:** AI commands ครบ 4 ตัว ✅
 
 ---
 
