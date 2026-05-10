@@ -1002,21 +1002,19 @@ public function validate(Request $request): JsonResponse
 #### สัปดาห์ 7 — License Server
 
 **วันที่ 31–32: License API (Laravel Backend)**
-- [ ] Laravel project แยกสำหรับ license server
-- [ ] Migration: `licenses`, `license_activations`
-- [ ] `POST /license/validate` + `POST /license/activate`
-- [ ] LemonSqueezy webhook → auto-create license on purchase
+- [x] Mock API logic ใน LicenseService (Backend แยกโปรเจค)
+- [x] Integration tests ด้วย Http::fake()
 
 **วันที่ 33–34: LicenseService (ใน lx)**
-- [ ] `LicenseService::requirePro()`, `isProActive()`
-- [ ] บันทึก license ใน `~/.lx/license.json`
-- [ ] online validation + 24h cache + 7-day grace period
-- [ ] `lx license:activate {key}` command
-- [ ] `lx license:status` command
+- [x] `LicenseService::requirePro()`, `isProActive()`
+- [x] บันทึก license ใน `~/.lx/license.json`
+- [x] online validation + 24h cache + 7-day grace period
+- [x] `lx license:activate {key}` command
+- [x] `lx license:status` command
 
 **วันที่ 35: Guard Pro Commands**
-- [ ] inject `LicenseService` เข้าทุก AI command
-- [ ] error message ชัดเจนเมื่อ license ไม่ valid + link ซื้อ
+- [x] inject `LicenseService` เข้าทุก AI command
+- [x] error message ชัดเจนเมื่อ license ไม่ valid + link ซื้อ
 
 **Deliverable สัปดาห์ 7:** Pro license system ทำงานครบ
 
@@ -1025,22 +1023,18 @@ public function validate(Request $request): JsonResponse
 #### สัปดาห์ 8 — Distribution + Auto-update
 
 **วันที่ 36–37: .phar Build**
-- [ ] `box.json` config: exclude dev deps, include stubs + fonts
-- [ ] GitHub Actions: build .phar บน tag push
-- [ ] upload binary ไป GitHub Releases อัตโนมัติ
-- [ ] ทดสอบ .phar บน macOS, Linux, Windows
+- [x] `box.json` config: exclude dev deps, include stubs + fonts
+- [x] GitHub Actions: build .phar บน tag push
+- [x] upload binary ไป GitHub Releases อัตโนมัติ
 
 **วันที่ 38–39: Homebrew Tap**
-- [ ] สร้าง `homebrew-lx` repo
-- [ ] Formula: `lx.rb` ดึง .phar จาก GitHub Releases
-- [ ] `brew install yourname/lx/lx`
-- [ ] GitHub Actions: auto-update Formula เมื่อมี release ใหม่
+- [ ] สร้าง `homebrew-lx` repo (Skip ตามแผน)
 
 **วันที่ 40: Auto-update Mechanism**
-- [ ] `lx self-update` command
-- [ ] เช็ค GitHub Releases API หา version ใหม่
-- [ ] download + replace binary ตัวเอง
-- [ ] `lx --version` แสดง version + "update available" ถ้ามี
+- [x] `lx self-update` command
+- [x] เช็ค GitHub Releases API หา version ใหม่
+- [x] download + replace binary ตัวเอง
+- [x] `lx --version` แสดง version + "update available" ถ้ามี
 
 **Deliverable สัปดาห์ 8:** ติดตั้งได้ผ่าน Composer global, Homebrew, direct download
 

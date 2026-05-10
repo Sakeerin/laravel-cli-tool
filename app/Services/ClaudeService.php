@@ -22,8 +22,11 @@ class ClaudeService
     private int $lastOutputTokens = 0;
 
     public function __construct(
+        private readonly LicenseService $license,
         private readonly ?string $apiKey = null,
-    ) {}
+    ) {
+        $this->license->requirePro();
+    }
 
     private function getClient(): Client
     {
