@@ -1,0 +1,78 @@
+---
+title: check
+description: Check Laravel project health — environment variables, security advisories, configuration, and queue setup.
+---
+
+## Usage
+
+```bash
+lx check [options]
+```
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--fix` | Show recommended fix commands (does not auto-fix) |
+
+## Example
+
+```bash
+lx check --fix
+```
+
+## Output
+
+```
+Environment
+  ✓ PHP 8.3.4 (requires ^8.2)
+  ✓ Laravel 11.28 installed
+  ✓ .env variables match .env.example
+  ✗ Missing: QUEUE_CONNECTION
+
+Security
+  ✓ No known vulnerabilities (composer audit)
+
+Configuration
+  ✓ APP_KEY is set
+  ✓ APP_DEBUG=false
+  ⚠ LOG_CHANNEL=stack (consider daily or stderr)
+
+Queue
+  ✗ QUEUE_CONNECTION not set (falling back to sync)
+
+──────────────────────────────────────────────────
+2 errors, 1 warning found.
+
+Fix suggestions:
+  Add QUEUE_CONNECTION=redis to your .env file
+  Run: php artisan queue:work --daemon
+```
+
+## Checks Performed
+
+| Category | Check |
+|---|---|
+| Environment | PHP version vs `composer.json` `require.php` |
+| Environment | `.env` keys vs `.env.example` |
+| Security | `composer audit` for known CVEs |
+| Configuration | `APP_KEY` is set |
+| Configuration | `APP_DEBUG` is `false` in production |
+| Configuration | `APP_ENV` value |
+| Queue | `QUEUE_CONNECTION` is not `sync` in production |
+
+## Configuration
+
+Add custom required env keys and warnings to `.lxconfig.yml`:
+
+```yaml
+check:
+  required_env:
+    - APP_KEY
+    - DB_CONNECTION
+    - REDIS_URL
+  warn_if:
+    - key: QUEUE_CONNECTION
+      value: sync
+      message: "Use redis or database in production"
+```

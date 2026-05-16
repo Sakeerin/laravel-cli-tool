@@ -1,0 +1,74 @@
+---
+title: make:module
+description: Scaffold a complete Laravel module — controller, service, repository, model, migration, policy, seeder, routes, and tests — in one command.
+---
+
+## Usage
+
+```bash
+lx make:module {Name} [options]
+```
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--model` | Generate an Eloquent Model |
+| `--controller` | Generate a Resource Controller |
+| `--service` | Generate a Service + Interface |
+| `--repository` | Generate a Repository + Interface |
+| `--policy` | Generate a Policy |
+| `--migration` | Generate a Migration |
+| `--seeder` | Generate a Seeder |
+| `--test` | Generate Feature + Unit Tests |
+| `--all` | Generate everything above |
+
+## Examples
+
+```bash
+# Scaffold everything at once
+lx make:module Billing --all
+
+# Only model + service + tests
+lx make:module Invoice --model --service --test
+```
+
+### Output (`--all`)
+
+```
+✓ app/Models/Billing.php
+✓ app/Http/Controllers/BillingController.php
+✓ app/Services/BillingService.php
+✓ app/Contracts/BillingServiceInterface.php
+✓ app/Repositories/BillingRepository.php
+✓ app/Contracts/BillingRepositoryInterface.php
+✓ app/Policies/BillingPolicy.php
+✓ database/migrations/2026_05_16_000000_create_billings_table.php
+✓ database/seeders/BillingSeeder.php
+✓ tests/Feature/BillingControllerTest.php
+✓ tests/Unit/Services/BillingServiceTest.php
+✓ routes/billing.php
+```
+
+## Rollback on Error
+
+If any file fails to be written mid-way through, `lx` rolls back all files created in that run so your project is never left in a partial state.
+
+## Generated Routes
+
+`routes/billing.php` contains a ready-to-use resource route:
+
+```php
+<?php
+
+use App\Http\Controllers\BillingController;
+use Illuminate\Support\Facades\Route;
+
+Route::apiResource('billing', BillingController::class);
+```
+
+Register it in `bootstrap/app.php` or `routes/api.php`:
+
+```php
+require __DIR__ . '/../routes/billing.php';
+```

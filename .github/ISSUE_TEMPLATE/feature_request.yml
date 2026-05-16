@@ -1,0 +1,60 @@
+name: Feature Request
+description: Suggest a new feature or improvement for lx
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature!
+        Please describe the problem you want to solve — a clear problem statement makes it much easier to evaluate the request.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of lx does this relate to?
+      options:
+        - make:* commands (scaffolding)
+        - lint
+        - check (health)
+        - config:init / config:pull
+        - AI commands (Pro)
+        - License system
+        - self-update / distribution
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What problem are you trying to solve? What is frustrating or missing?
+      placeholder: "When I run make:service, I always have to manually add the repository injection to the constructor. It would save time if..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How would you like to see this solved? Include command signatures or config options if relevant.
+      placeholder: |
+        Add a `--inject-repository` flag to make:service:
+        lx make:service PaymentService --inject-repository=PaymentRepository
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any other approaches you've tried or thought about?
+
+  - type: checkboxes
+    id: willing_to_pr
+    attributes:
+      label: Contribution
+      options:
+        - label: I am willing to open a pull request for this feature

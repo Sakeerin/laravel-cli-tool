@@ -1,0 +1,56 @@
+---
+title: ai:fix
+description: Analyse an error message and get a diagnosis with suggested fixes from Claude.
+---
+
+## Usage
+
+```bash
+lx ai:fix {error_message?} [options]
+lx ai:fix --last
+```
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--last` | Read the most recent ERROR/CRITICAL from `storage/logs/laravel.log` |
+
+## Examples
+
+```bash
+# Pass the error directly
+lx ai:fix "SQLSTATE[42S22]: Column not found: 1054 Unknown column 'paid_amount'"
+
+# Analyse the last log error
+lx ai:fix --last
+```
+
+## Output
+
+```
+Analyzing error...
+
+Diagnosis: Column 'paid_amount' does not exist in the current database schema.
+
+Possible causes:
+1. A migration adding this column has not been run yet.
+2. The column name is misspelled — check existing columns with `php artisan tinker` → Schema::getColumns('invoices').
+3. The migration was created but not committed to your branch.
+
+Suggested fix:
+  php artisan migrate          ← if the migration already exists
+  lx ai:migration "add paid_amount column to invoices table"   ← if it doesn't
+
+Used 1,140 tokens (input: 820, output: 320) — ~$0.007
+```
+
+## How It Works
+
+- The error message is streamed to Claude in real time so you see the diagnosis as it's written
+- `--last` reads the most recent `ERROR` or `CRITICAL` log line from `storage/logs/laravel.log` and uses that as the input
+
+## Tips
+
+- Include the full stack trace for better context — Claude can identify the offending file and line
+- Use `--last` in a tight debug loop: run your app, hit the error, run `lx ai:fix --last`

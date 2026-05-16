@@ -1,0 +1,84 @@
+name: Bug Report
+description: Report unexpected behaviour in lx
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug.
+        Please fill in as much detail as possible to help us reproduce and fix the issue.
+
+  - type: input
+    id: lx_version
+    attributes:
+      label: lx version
+      description: Run `lx --version` and paste the output.
+      placeholder: "e.g. 0.4.0"
+    validations:
+      required: true
+
+  - type: input
+    id: php_version
+    attributes:
+      label: PHP version
+      description: Run `php --version` and paste the first line.
+      placeholder: "e.g. PHP 8.3.4"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      placeholder: "e.g. macOS 15.3, Ubuntu 24.04, Windows 11"
+    validations:
+      required: true
+
+  - type: input
+    id: command
+    attributes:
+      label: Command run
+      description: The exact `lx` command that triggered the bug.
+      placeholder: "lx make:service PaymentService --interface --test"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: What happened instead? Include the full error output.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps that reproduce the bug.
+      placeholder: |
+        1. Run `lx make:service ...`
+        2. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: .lxconfig.yml (if applicable)
+      description: Paste your config file contents (omit any secrets).
+      render: yaml
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Anything else that might help — composer.json snippet, Laravel version, etc.

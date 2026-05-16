@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://lx.dev/docs
+    about: Check the docs first — your question may already be answered.
+  - name: Discussions
+    url: https://github.com/your-username/lx/discussions
+    about: Questions, ideas, and community support.
+  - name: Security vulnerabilities
+    url: mailto:security@lx.dev
+    about: Please report security issues privately by email — not as a public issue.

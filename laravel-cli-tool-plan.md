@@ -1047,20 +1047,20 @@ public function validate(Request $request): JsonResponse
 #### สัปดาห์ 9 — Documentation Site
 
 **วันที่ 41–42: Docs Site (Fumadocs)**
-- [ ] Next.js + Fumadocs setup: `lx.dev`
-- [ ] Pages: Getting Started, Commands Reference, Configuration, Pro/AI Commands
-- [ ] Code examples สำหรับทุก command
-- [ ] Dark mode
+- [x] Next.js + Fumadocs setup: `lx.dev`
+- [x] Pages: Getting Started, Commands Reference, Configuration, Pro/AI Commands
+- [x] Code examples สำหรับทุก command
+- [x] Dark mode
 
 **วันที่ 43–44: Demo Assets**
-- [ ] Record terminal GIFs ด้วย `vhs` สำหรับทุก command หลัก
-- [ ] embed ใน README.md และ docs site
-- [ ] Pricing page: Free vs Pro vs Team
+- [x] Record terminal GIFs ด้วย `vhs` สำหรับทุก command หลัก
+- [x] embed ใน README.md และ docs site
+- [x] Pricing page: Free vs Pro vs Team
 
 **วันที่ 45: GitHub Repo Polish**
-- [ ] README.md ครบ: badges, demo GIF, installation, quick start
-- [ ] CONTRIBUTING.md
-- [ ] Issue templates: bug report, feature request
+- [x] README.md ครบ: badges, demo GIF, installation, quick start
+- [x] CONTRIBUTING.md
+- [x] Issue templates: bug report, feature request
 - [ ] GitHub Discussions เปิดสำหรับ community
 
 **Deliverable สัปดาห์ 9:** docs site live, repo พร้อม public

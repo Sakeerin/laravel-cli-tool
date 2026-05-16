@@ -1,0 +1,51 @@
+---
+title: ai:usage
+description: Show monthly token usage and estimated cost for AI commands.
+---
+
+## Usage
+
+```bash
+lx ai:usage [options]
+```
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--month={YYYY-MM}` | Show stats for a specific month (default: current month) |
+
+## Examples
+
+```bash
+# Current month
+lx ai:usage
+
+# Specific month
+lx ai:usage --month=2026-04
+```
+
+## Output
+
+```
+AI Usage — May 2026
+
+  Calls:          47
+  Input tokens:   38,420
+  Output tokens:  14,810
+  Total tokens:   53,230
+
+  Estimated cost: $0.34
+    Input:  $0.12  (38,420 tokens × $3/MTok)
+    Output: $0.22  (14,810 tokens × $15/MTok)
+
+Usage data stored at: ~/.lx/usage.json
+```
+
+## Storage
+
+Usage data is stored locally at `~/.lx/usage.json`. Nothing is sent to any server.
+
+Pricing is based on `claude-sonnet-4-6` rates:
+- Input: **$3 per million tokens**
+- Output: **$15 per million tokens**

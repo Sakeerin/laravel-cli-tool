@@ -1,0 +1,45 @@
+---
+title: self-update
+description: Update lx to the latest version.
+---
+
+## Usage
+
+```bash
+lx self-update
+```
+
+Checks the GitHub Releases API for a newer version. If one is found, downloads and replaces the current binary.
+
+## Example
+
+```bash
+lx self-update
+```
+
+```
+Current version: v0.3.1
+Latest version:  v0.4.0
+
+Downloading v0.4.0...
+✓ lx updated to v0.4.0
+```
+
+When already up to date:
+
+```
+lx is already at the latest version (v0.4.0).
+```
+
+## Version Check
+
+Running any command shows an update notification when a new version is available:
+
+```
+lx make:service UserService
+
+Update available: v0.4.0 (you have v0.3.1)
+Run `lx self-update` to update.
+
+✓ app/Services/UserService.php
+```

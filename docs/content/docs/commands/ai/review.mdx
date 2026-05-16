@@ -1,0 +1,84 @@
+---
+title: ai:review
+description: Review staged or uncommitted changes with Claude — N+1 queries, missing indexes, security issues, and more.
+---
+
+## Usage
+
+```bash
+lx ai:review [options]
+```
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--staged` | Review staged changes (`git diff --cached`) |
+| `--diff` | Review all uncommitted changes (`git diff`) |
+| `--file={path}` | Review a single file |
+
+## Examples
+
+```bash
+# Review what's about to be committed
+lx ai:review --staged
+
+# Review all uncommitted work
+lx ai:review --diff
+
+# Review one file
+lx ai:review --file=app/Http/Controllers/UserController.php
+```
+
+## Output
+
+```
+Reviewing 3 changed files...
+
+app/Http/Controllers/UserController.php
+  ⚠ Line 42: Potential N+1 query — eager-load the relationship
+    Suggestion: User::with('orders')->paginate()
+
+app/Services/UserService.php
+  ✓ No issues found
+
+database/migrations/2026_05_16_create_users_table.php
+  ✓ Migration looks correct
+
+Summary: 1 warning, 0 errors
+
+Used 2,310 tokens (input: 1,900, output: 410) — ~$0.012
+```
+
+## Review Focus Areas
+
+By default `ai:review` checks for:
+
+| Category | Examples |
+|---|---|
+| **N+1 queries** | Missing `with()` on relationships |
+| **Missing indexes** | Foreign keys without indexes |
+| **Security** | Mass assignment, raw SQL, unvalidated input |
+| **Naming conventions** | Class, method, variable naming |
+| **Performance** | Unnecessary queries, large collections in memory |
+
+Customise the focus in `.lxconfig.yml`:
+
+```yaml
+ai:
+  review_focus:
+    - n_plus_one
+    - missing_indexes
+    - security
+```
+
+## How It Works
+
+- `git diff` output is passed to Claude with the review focus areas as context
+- Results stream in real time so you see feedback as each file is processed
+- Diffs larger than 12,000 characters are truncated with a warning
+
+## Tips
+
+- Run `lx ai:review --staged` as part of your pre-commit workflow
+- Use `--file` during development to get quick feedback on a specific file before staging

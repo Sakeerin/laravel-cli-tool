@@ -1,0 +1,51 @@
+---
+title: make:repository
+description: Generate a Repository class with optional Eloquent model binding, interface, and test.
+---
+
+## Usage
+
+```bash
+lx make:repository {Name} [options]
+```
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--model={Model}` | Bind to an Eloquent model (adds type hint) |
+| `--interface` | Create a matching Interface in `app/Contracts/` |
+| `--test` | Create a Unit Test |
+
+## Examples
+
+```bash
+lx make:repository UserRepository --model=User --interface --test
+```
+
+### Output
+
+```
+✓ app/Repositories/UserRepository.php
+✓ app/Contracts/UserRepositoryInterface.php
+✓ tests/Unit/Repositories/UserRepositoryTest.php
+```
+
+## Generated Repository
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Repositories;
+
+use App\Models\User;
+
+class UserRepository
+{
+    public function __construct(private readonly User $model)
+    {
+    }
+}
+```

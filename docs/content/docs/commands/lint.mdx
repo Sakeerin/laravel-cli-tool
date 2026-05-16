@@ -1,0 +1,83 @@
+---
+title: lint
+description: Lint PHP files against PSR-12 and your team's naming conventions.
+---
+
+## Usage
+
+```bash
+lx lint [path] [options]
+```
+
+If `path` is omitted, `lx` lints `app/` and `tests/`.
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--fix` | Auto-fix issues that can be corrected |
+| `--strict` | Enable stricter rule set |
+| `--format=text\|json\|github` | Output format (default: `text`) |
+
+## Examples
+
+```bash
+# Lint everything
+lx lint
+
+# Lint a specific directory
+lx lint app/Services
+
+# Auto-fix
+lx lint --fix
+
+# GitHub Actions annotation format (for CI)
+lx lint --format=github
+```
+
+## Output (text)
+
+```
+Scanning 24 files...
+
+ERROR  app/Services/PaymentService.php
+  Line 12: Missing return type declaration
+  Line 18: Method exceeds 30 line limit (found 47 lines)
+
+WARNING  app/Http/Controllers/UserController.php
+  Line 5: Missing declare(strict_types=1)
+
+Found 2 errors, 1 warning across 2 files.
+Run `lx lint --fix` to auto-fix fixable issues.
+```
+
+## Output (GitHub Actions)
+
+```
+::error file=app/Services/PaymentService.php,line=12::Missing return type declaration
+::error file=app/Services/PaymentService.php,line=18::Method exceeds 30 line limit (found 47 lines)
+::warning file=app/Http/Controllers/UserController.php,line=5::Missing declare(strict_types=1)
+```
+
+## Checks Performed
+
+- **PSR-12** — spacing, brace placement, line length
+- **Return types** — warns on methods without a declared return type
+- **Strict types** — warns on files missing `declare(strict_types=1)`
+- **Naming conventions** — checks class name suffixes (`Service`, `Repository`, `Data`) from `.lxconfig.yml`
+- **Method length** — configurable via `lint.rules.max_method_length`
+
+## Configuration
+
+```yaml
+lint:
+  rules:
+    require_return_types: true
+    require_strict_types: true
+    max_method_length: 30
+    naming:
+      service_suffix: Service
+      repository_suffix: Repository
+  ignore:
+    - app/Http/Controllers/Auth
+```

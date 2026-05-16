@@ -1,0 +1,68 @@
+---
+title: make:action
+description: Generate a single-purpose Action class.
+---
+
+## Usage
+
+```bash
+lx make:action {Name} [options]
+```
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--invokable` | Use a single `__invoke()` method |
+| `--test` | Create a Unit Test |
+
+## Examples
+
+```bash
+lx make:action CreateUserAction --invokable --test
+```
+
+### Output
+
+```
+✓ app/Actions/CreateUserAction.php
+✓ tests/Unit/Actions/CreateUserActionTest.php
+```
+
+## Generated Action
+
+### Invokable
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Actions;
+
+class CreateUserAction
+{
+    public function __invoke(): void
+    {
+        //
+    }
+}
+```
+
+### Regular
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Actions;
+
+class CreateUserAction
+{
+    public function handle(): void
+    {
+        //
+    }
+}
+```

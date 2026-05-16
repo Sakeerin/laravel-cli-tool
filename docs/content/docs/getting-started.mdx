@@ -1,0 +1,94 @@
+---
+title: Getting Started
+description: Install lx and run your first command in under a minute.
+---
+
+## Requirements
+
+- PHP 8.2 or higher
+- Composer
+
+## Installation
+
+### Global (recommended)
+
+```bash
+composer global require lx/lx
+```
+
+Make sure Composer's global `bin` directory is in your `$PATH`:
+
+```bash
+# macOS / Linux — add to ~/.zshrc or ~/.bashrc
+export PATH="$HOME/.composer/vendor/bin:$PATH"
+
+# Windows — add to PowerShell profile
+$env:PATH += ";$env:APPDATA\Composer\vendor\bin"
+```
+
+Verify the installation:
+
+```bash
+lx --version
+```
+
+### Via .phar (no Composer needed)
+
+Download the latest release from [GitHub Releases](https://github.com/your-username/lx/releases) and place it in your `$PATH`:
+
+```bash
+curl -L https://github.com/your-username/lx/releases/latest/download/lx.phar -o /usr/local/bin/lx
+chmod +x /usr/local/bin/lx
+```
+
+### From Source
+
+```bash
+git clone https://github.com/your-username/lx.git
+cd lx
+composer install
+php lx list
+```
+
+## First Commands
+
+Run `lx` from inside any Laravel project directory.
+
+```bash
+# See all available commands
+lx list
+
+# Scaffold a service class
+lx make:service UserService
+
+# Scaffold with interface and unit test
+lx make:service PaymentService --interface --test
+
+# Check your project health
+lx check
+
+# Lint your codebase
+lx lint
+```
+
+## Configuration (Optional)
+
+Copy the example config into your Laravel project root:
+
+```bash
+cp vendor/lx/lx/.lxconfig.yml.example .lxconfig.yml
+```
+
+See the [Configuration reference](/docs/configuration) for all available options.
+
+## Updating
+
+```bash
+lx self-update
+```
+
+Or with Composer:
+
+```bash
+composer global update lx/lx
+```

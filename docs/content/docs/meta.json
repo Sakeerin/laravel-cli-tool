@@ -1,0 +1,29 @@
+{
+  "title": "lx Docs",
+  "pages": [
+    "index",
+    "getting-started",
+    "configuration",
+    "commands",
+    "---Commands---",
+    "commands/index",
+    "commands/make-service",
+    "commands/make-repository",
+    "commands/make-dto",
+    "commands/make-action",
+    "commands/make-module",
+    "commands/lint",
+    "commands/check",
+    "commands/config-init",
+    "commands/config-pull",
+    "commands/license",
+    "commands/self-update",
+    "---AI Commands (Pro)---",
+    "commands/ai/index",
+    "commands/ai/migration",
+    "commands/ai/fix",
+    "commands/ai/test",
+    "commands/ai/review",
+    "commands/ai/usage"
+  ]
+}

@@ -1,0 +1,117 @@
+---
+title: Configuration
+description: Customise lx behaviour with .lxconfig.yml in your project root.
+---
+
+## Overview
+
+Place a `.lxconfig.yml` file at the root of your Laravel project to override scaffold paths, lint rules, health check requirements, and AI settings.
+
+All options are **optional** — `lx` works without any config file using sensible defaults.
+
+## Full Example
+
+```yaml
+# .lxconfig.yml
+
+version: 1
+
+# ── Scaffold paths ─────────────────────────────────────────────────────────────
+scaffold:
+  service_path: app/Services
+  repository_path: app/Repositories
+  contract_path: app/Contracts
+  dto_path: app/Data
+  action_path: app/Actions
+  test_path: tests/Unit
+  use_readonly_dto: true        # DTO classes are readonly by default
+  use_strict_types: true        # Inject declare(strict_types=1)
+
+# ── Lint rules ─────────────────────────────────────────────────────────────────
+lint:
+  rules:
+    require_return_types: true
+    require_strict_types: true
+    require_docblock_for: []    # 'public', 'protected', or [] for none
+    max_method_length: 30       # lines (0 = unlimited)
+    naming:
+      service_suffix: Service
+      repository_suffix: Repository
+      dto_suffix: Data
+  ignore:
+    - app/Http/Controllers/Auth
+    - "**/*Request.php"
+
+# ── Health check requirements ──────────────────────────────────────────────────
+check:
+  required_env:
+    - APP_KEY
+    - DB_CONNECTION
+    - QUEUE_CONNECTION
+    - CACHE_DRIVER
+  warn_if:
+    - key: APP_DEBUG
+      value: "true"
+      message: "APP_DEBUG should be false in production"
+    - key: QUEUE_CONNECTION
+      value: sync
+      message: "Use redis or database in production"
+
+# ── AI commands (Pro) ──────────────────────────────────────────────────────────
+ai:
+  model: claude-sonnet-4-6
+  max_tokens: 4096
+  migration_style: fluent        # fluent | schema_builder
+  test_framework: pest           # pest | phpunit
+  review_focus:
+    - n_plus_one
+    - missing_indexes
+    - security
+    - naming_convention
+```
+
+## Scaffold Options
+
+| Key | Default | Description |
+|---|---|---|
+| `service_path` | `app/Services` | Where `make:service` writes files |
+| `repository_path` | `app/Repositories` | Where `make:repository` writes files |
+| `contract_path` | `app/Contracts` | Where interfaces are written |
+| `dto_path` | `app/Data` | Where `make:dto` writes files |
+| `action_path` | `app/Actions` | Where `make:action` writes files |
+| `test_path` | `tests/Unit` | Base directory for generated tests |
+| `use_readonly_dto` | `true` | Generate readonly DTO classes |
+| `use_strict_types` | `true` | Add `declare(strict_types=1)` |
+
+## Lint Options
+
+| Key | Default | Description |
+|---|---|---|
+| `rules.require_return_types` | `true` | Warn on missing return types |
+| `rules.require_strict_types` | `true` | Warn on missing `declare(strict_types=1)` |
+| `rules.max_method_length` | `30` | Max method length in lines (0 = off) |
+| `rules.naming.*_suffix` | varies | Required class name suffix per type |
+| `ignore` | `[]` | Paths/globs to skip |
+
+## Health Check Options
+
+| Key | Description |
+|---|---|
+| `required_env` | `.env` keys that must be set (non-empty) |
+| `warn_if` | Warn when a key has a specific value |
+
+## AI Options *(Pro)*
+
+| Key | Default | Description |
+|---|---|---|
+| `model` | `claude-sonnet-4-6` | Claude model ID |
+| `max_tokens` | `4096` | Token limit per request |
+| `migration_style` | `fluent` | Generated migration style |
+| `test_framework` | `pest` | `pest` or `phpunit` for `ai:test` |
+| `review_focus` | all | Which issues `ai:review` checks for |
+
+The AI commands read `ANTHROPIC_API_KEY` from your environment. Set it in your shell profile:
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+```

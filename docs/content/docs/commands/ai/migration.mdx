@@ -1,0 +1,91 @@
+---
+title: ai:migration
+description: Generate a Laravel migration file from a plain-text description using Claude.
+---
+
+## Usage
+
+```bash
+lx ai:migration {description} [options]
+```
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--table={name}` | Explicitly specify the table name |
+| `--dry-run` | Show generated code without writing the file |
+
+## Examples
+
+```bash
+lx ai:migration "orders table with user_id, items as JSON, decimal total, status string, nullable paid_at timestamp"
+
+lx ai:migration "add stripe_customer_id to users" --table=users
+
+lx ai:migration "product catalogue with slug, name, price, category_id FK" --dry-run
+```
+
+## Output
+
+```
+Generating migration...
+
+✓ database/migrations/2026_05_16_000001_create_orders_table.php
+
+Preview:
+  - user_id (foreignId, constrained)
+  - items (json)
+  - total (decimal 12,2)
+  - status (string, default: pending)
+  - paid_at (timestamp, nullable)
+  + indexes: user_id, status
+
+Used 923 tokens (input: 680, output: 243) — ~$0.006
+```
+
+## Generated Migration
+
+```php
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->json('items');
+            $table->decimal('total', 12, 2);
+            $table->string('status')->default('pending');
+            $table->timestamp('paid_at')->nullable();
+            $table->timestamps();
+
+            $table->index('user_id');
+            $table->index('status');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('orders');
+    }
+};
+```
+
+## How It Works
+
+1. Your description is sent to Claude with a system prompt that enforces Laravel 11 migration syntax
+2. The returned PHP is validated for syntax correctness before being saved
+3. `--dry-run` skips the file write so you can review before committing
+
+## Tips
+
+- Be specific about nullable fields, defaults, and indexes
+- Mention foreign keys explicitly ("user_id references users")
+- Use `--dry-run` first when iterating on a complex schema

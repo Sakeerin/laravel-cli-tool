@@ -1,0 +1,64 @@
+---
+title: license:activate / license:status
+description: Activate and manage your lx Pro license.
+---
+
+## license:activate
+
+```bash
+lx license:activate {key}
+```
+
+Validates the license key against the lx license server and stores it at `~/.lx/license.json`.
+
+### Example
+
+```bash
+lx license:activate LX-PRO-XXXX-XXXX-XXXX-XXXX
+```
+
+```
+Validating license key...
+✓ Pro license activated
+  Plan: Pro
+  Valid until: 2027-05-16
+  Machine: my-macbook
+
+AI commands are now unlocked. Set ANTHROPIC_API_KEY to start.
+```
+
+---
+
+## license:status
+
+```bash
+lx license:status
+```
+
+Shows the current license state and when it was last validated online.
+
+### Example
+
+```bash
+lx license:status
+```
+
+```
+License: Pro ✓
+Key: LX-PRO-XXXX-****-****-XXXX
+Valid until: 2027-05-16
+Last validated: 2026-05-15 10:23 UTC (cached, 14h ago)
+```
+
+---
+
+## How Validation Works
+
+1. License is read from `~/.lx/license.json`
+2. If validated within the last **24 hours**, the cached result is used
+3. Otherwise, the license server is contacted for online validation
+4. If the server is unreachable, the **7-day grace period** applies — AI commands continue working offline for up to 7 days from the last successful validation
+
+## Purchasing a License
+
+Visit [lx.dev/pricing](/pricing) to purchase a Pro or Team plan via LemonSqueezy.

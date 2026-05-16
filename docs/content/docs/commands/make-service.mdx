@@ -1,0 +1,100 @@
+---
+title: make:service
+description: Generate a Service class with optional interface and unit test.
+---
+
+## Usage
+
+```bash
+lx make:service {Name} [options]
+```
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--interface` | Create a matching Interface in `app/Contracts/` |
+| `--test` | Create a Unit Test in `tests/Unit/Services/` |
+| `--abstract` | Make the class `abstract` |
+| `--no-constructor` | Omit the `__construct()` method |
+
+## Examples
+
+```bash
+# Basic service
+lx make:service UserService
+
+# With interface and test
+lx make:service PaymentService --interface --test
+
+# Abstract service without constructor
+lx make:service BaseService --abstract --no-constructor
+```
+
+### Output
+
+```
+✓ app/Services/PaymentService.php
+✓ app/Contracts/PaymentServiceInterface.php
+✓ tests/Unit/Services/PaymentServiceTest.php
+```
+
+## Generated Files
+
+### Service
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Services;
+
+use App\Contracts\PaymentServiceInterface;
+
+class PaymentService implements PaymentServiceInterface
+{
+    public function __construct()
+    {
+        //
+    }
+}
+```
+
+### Interface
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Contracts;
+
+interface PaymentServiceInterface
+{
+    //
+}
+```
+
+### Test
+
+```php
+<?php
+
+use App\Services\PaymentService;
+
+test('it can be instantiated', function () {
+    expect(new PaymentService())->toBeInstanceOf(PaymentService::class);
+});
+```
+
+## Configuration
+
+Override default paths in `.lxconfig.yml`:
+
+```yaml
+scaffold:
+  service_path: app/Domain/Services
+  contract_path: app/Domain/Contracts
+  test_path: tests/Unit
+```

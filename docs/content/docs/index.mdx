@@ -1,0 +1,56 @@
+---
+title: Introduction
+description: lx — the CLI companion for Laravel developers that Artisan doesn't have.
+---
+
+# What is lx?
+
+`lx` is a developer CLI tool built on [Laravel Zero](https://laravel-zero.com) that helps Laravel teams:
+
+- **Scaffold boilerplate** — generate Services, Repositories, DTOs, Actions, and full Modules in one command
+- **Enforce conventions** — lint PHP files against PSR-12 and your team's naming rules
+- **Check project health** — verify `.env` variables, security advisories, queue configuration, and more
+- **Generate code with AI** — use Claude to write migrations, fix errors, create tests, and review diffs *(Pro)*
+
+## Why not just use Artisan?
+
+| Feature | Artisan | `lx` |
+|---|---|---|
+| Convention enforcement (naming, return types) | ✗ | ✓ |
+| Health check (.env, security advisories, queue) | ✗ | ✓ |
+| Module scaffold (Controller + Service + Repository in one shot) | partial | ✓ |
+| Custom stub rules via config file | limited | ✓ |
+| AI: generate migration from plain text | ✗ | ✓ Pro |
+| AI: analyse error + suggest fix | ✗ | ✓ Pro |
+| AI: generate Pest tests from method signature | ✗ | ✓ Pro |
+| AI: code review staged diff | ✗ | ✓ Pro |
+
+`lx` is a **companion**, not a replacement for Artisan.
+
+## Quick Start
+
+```bash
+# Install globally
+composer global require lx/lx
+
+# Scaffold a service with interface + test
+lx make:service PaymentService --interface --test
+
+# Scaffold an entire module
+lx make:module Billing --all
+
+# Check project health
+lx check
+
+# Lint with auto-fix
+lx lint --fix
+```
+
+## Next Steps
+
+<Cards>
+  <Card title="Installation" href="/docs/getting-started" />
+  <Card title="Command Reference" href="/docs/commands" />
+  <Card title="Configuration" href="/docs/configuration" />
+  <Card title="AI Commands (Pro)" href="/docs/commands/ai" />
+</Cards>

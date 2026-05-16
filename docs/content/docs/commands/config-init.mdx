@@ -1,0 +1,32 @@
+---
+title: config:init
+description: Create a .lxconfig.yml file interactively.
+---
+
+## Usage
+
+```bash
+lx config:init
+```
+
+Launches an interactive wizard that asks questions about your project structure and writes a `.lxconfig.yml` with your answers.
+
+## Example Session
+
+```
+Creating .lxconfig.yml...
+
+Where do you store Services? [app/Services]:
+Where do you store Repositories? [app/Repositories]:
+Where do you store Contracts/Interfaces? [app/Contracts]:
+Require return types? [Y/n]: y
+Max method length in lines? (0 = unlimited) [30]:
+Test framework? [pest/phpunit] [pest]:
+
+✓ .lxconfig.yml created
+```
+
+## Related
+
+- [`config:pull`](/docs/commands/config-pull) — download a shared config from a URL
+- [Configuration reference](/docs/configuration) — full option list

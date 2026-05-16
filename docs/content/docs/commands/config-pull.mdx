@@ -1,0 +1,33 @@
+---
+title: config:pull
+description: Download a shared .lxconfig.yml from a URL.
+---
+
+## Usage
+
+```bash
+lx config:pull {url}
+```
+
+Fetches the YAML file at `url`, validates it, and writes it to `.lxconfig.yml` in the current directory.
+
+## Example
+
+```bash
+lx config:pull https://config.acme.com/lxconfig.yml
+```
+
+## Use Cases
+
+- **Team shared config** — host a canonical `lxconfig.yml` on your intranet or GitHub Gist and have all developers pull it
+- **CI bootstrap** — pull a known-good config as part of a CI setup step
+
+## Behaviour
+
+- Validates that the downloaded file is a valid `lxconfig.yml` before writing
+- If `.lxconfig.yml` already exists, prompts for confirmation before overwriting
+
+## Related
+
+- [`config:init`](/docs/commands/config-init) — create a config interactively
+- [Configuration reference](/docs/configuration)

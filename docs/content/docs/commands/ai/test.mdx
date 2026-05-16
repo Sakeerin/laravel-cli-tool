@@ -1,0 +1,94 @@
+---
+title: ai:test
+description: Generate Pest or PHPUnit tests from a class method signature using Claude.
+---
+
+## Usage
+
+```bash
+lx ai:test {file}[::{method}] [options]
+```
+
+## Options
+
+| Option | Description |
+|---|---|
+| `--pest` | Generate Pest syntax (default) |
+| `--phpunit` | Generate PHPUnit syntax |
+| `--dry-run` | Show generated tests without writing the file |
+
+## Examples
+
+```bash
+# Generate tests for an entire class
+lx ai:test app/Services/InvoiceService.php
+
+# Generate tests for a specific method
+lx ai:test app/Services/InvoiceService.php::calculate
+
+# PHPUnit syntax
+lx ai:test app/Services/TaxEngine.php::apply --phpunit
+
+# Preview without saving
+lx ai:test app/Services/UserService.php --dry-run
+```
+
+## Output
+
+```
+Reading InvoiceService::calculate...
+Generating tests...
+
+✓ tests/Unit/Services/InvoiceServiceTest.php
+
+Generated 8 test cases:
+  - it calculates subtotal correctly
+  - it applies vat at 7 percent
+  - it calculates wht at 3 percent
+  - it applies discount before vat
+  - it handles zero discount
+  - it handles zero vat
+  - it handles combined vat and wht
+  - it throws exception for negative amount
+
+Used 1,840 tokens (input: 1,200, output: 640) — ~$0.013
+```
+
+## Generated Test (Pest)
+
+```php
+<?php
+
+use App\Services\InvoiceService;
+
+test('it calculates subtotal correctly', function () {
+    $service = new InvoiceService();
+    expect($service->calculate(100.0, 0, 0))->toBe(100.0);
+});
+
+test('it applies vat at 7 percent', function () {
+    $service = new InvoiceService();
+    expect($service->calculate(100.0, 7, 0))->toBe(107.0);
+});
+
+test('it throws exception for negative amount', function () {
+    $service = new InvoiceService();
+    expect(fn () => $service->calculate(-1.0, 0, 0))
+        ->toThrow(\InvalidArgumentException::class);
+});
+```
+
+## How It Works
+
+1. `lx` reads the source file and extracts the method signature using PHP reflection
+2. The signature (with parameter types and return type) is included in the prompt
+3. Claude generates test cases covering happy paths, edge cases, and expected exceptions
+4. The generated PHP is validated for syntax before being written to `tests/Unit/...`
+
+## Path Mapping
+
+| Source file | Test file |
+|---|---|
+| `app/Services/Foo.php` | `tests/Unit/Services/FooTest.php` |
+| `app/Actions/Bar.php` | `tests/Unit/Actions/BarTest.php` |
+| `app/Repositories/Baz.php` | `tests/Unit/Repositories/BazTest.php` |

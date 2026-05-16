@@ -1,0 +1,39 @@
+---
+title: AI Commands (Pro)
+description: Use Claude to generate migrations, fix errors, write tests, and review code.
+---
+
+## Overview
+
+AI commands use the [Claude API](https://anthropic.com) to generate and analyse code. They require:
+
+1. An active [Pro license](/docs/commands/license) (`lx license:activate <KEY>`)
+2. `ANTHROPIC_API_KEY` set in your environment
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+```
+
+## Rate Limiting
+
+`lx` enforces a local rate limit of **10 AI calls per minute** to prevent accidental runaway usage. If you exceed this, wait a moment and try again.
+
+## Cost Display
+
+Every AI command shows the token usage and estimated cost after it completes:
+
+```
+Used 1,240 tokens (input: 800, output: 440) — ~$0.009
+```
+
+Pricing is based on `claude-sonnet-4-6` at $3/MTok input, $15/MTok output.
+
+## Available Commands
+
+| Command | Description |
+|---|---|
+| [`ai:migration`](/docs/commands/ai/migration) | Generate a migration from a description |
+| [`ai:fix`](/docs/commands/ai/fix) | Analyse an error and suggest a fix |
+| [`ai:test`](/docs/commands/ai/test) | Generate Pest/PHPUnit tests |
+| [`ai:review`](/docs/commands/ai/review) | Review staged or uncommitted changes |
+| [`ai:usage`](/docs/commands/ai/usage) | Show monthly token summary |
